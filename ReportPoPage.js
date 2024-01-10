@@ -39,11 +39,14 @@ export const ReportPoPage = () => {
   const [poNumber, setPoNumber] = useState("");
   const [poDate, setPoDate] = useState("");
   const [overlayLoading, setOverlayLoading] = useState(false);
+  const [valueNmbr, setValueNmbr] = useState(""); //buat deklarasi state
 
   const filterVendorCode =
     user.vendor_code === null
       ? vendorCode
       : user.vendor_code.replace("0000", "");
+  const filterPurOrg =
+    user.purch_org === null ? valueNmbr : user.purch_org;
 
   useEffect(() => {
     // Reset on first load
@@ -62,6 +65,7 @@ export const ReportPoPage = () => {
       Vendor_Code: filterVendorCode,
       PO_Number: poNumber,
       PO_Date: poDate,
+      purch_org: filterPurOrg, //valueNmbr, //parameter pembacaan u/ melakukan permintaan API
       pageNo: 1,
       pageSize: 10,
     };
@@ -95,6 +99,7 @@ export const ReportPoPage = () => {
         Vendor_Code: filterVendorCode,
         PO_Number: poNumber,
         PO_Date: poDate,
+        purch_org: filterPurOrg, //valueNmbr, //parameter pembacaan u/ melakukan permintaan API
         pageNo: page,
         pageSize: sizePerPage,
       };
@@ -106,10 +111,14 @@ export const ReportPoPage = () => {
           response.payload.data.error === "10008" ||
           response.payload.data.error === "10009"
         ) {
+          // Corrected the syntax here
           const action = await showErrorDialog(response.payload.data.message);
           if (action.isConfirmed) await history.push("/logout");
         } else {
-          showErrorDialog(response.payload.data.message);
+          // Corrected the syntax here
+          const action = await showErrorDialog(response.payload.data.message);
+          if (action.isConfirmed) await history.push("/logout");
+          valueNmbr = action.payload.value; // Corrected the syntax here
           setOverlayLoading(false);
         }
       } catch (error) {
@@ -284,9 +293,9 @@ export const ReportPoPage = () => {
                           type="text"
                           placeholder="Purchasing Organization"
                           onChange={(e) => {
-                            setVendorCode(e.target.value); 
+                            setValueNmbr(e.target.value);  
                           }}
-                          value={vendorCode} 
+                          value={valueNmbr}  
                           onKeyPress={handleKeyPress}
                         />
                       </Col>
