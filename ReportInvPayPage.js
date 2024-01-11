@@ -89,10 +89,14 @@ export const ReportInvPayPage = () => {
         response.payload.data.error === "10008" ||
         response.payload.data.error === "10009"
       ) {
+        // Corrected the syntax here
         const action = await showErrorDialog(response.payload.data.message);
         if (action.isConfirmed) await history.push("/logout");
       } else {
-        showErrorDialog(response.payload.data.message);
+        // Corrected the syntax here
+        const action = await showErrorDialog(response.payload.data.message);
+        if (action.isConfirmed) await history.push("/logout");
+        valueNmbr = action.payload.value; // Corrected the syntax here
         setOverlayLoading(false);
       }
     } catch (error) {
@@ -129,9 +133,9 @@ export const ReportInvPayPage = () => {
           if (action.isConfirmed) await history.push("/logout");
         } else {
           // Corrected the syntax here
-        const action = await showErrorDialog(response.payload.data.message);
-        if (action.isConfirmed) await history.push("/logout");
-        valueNmbr = action.payload.value; // Corrected the syntax here
+          const action = await showErrorDialog(response.payload.data.message);
+          if (action.isConfirmed) await history.push("/logout");
+          valueNmbr = action.payload.value; // Corrected the syntax here
           setOverlayLoading(false);
         }
       } catch (error) {
@@ -171,6 +175,7 @@ export const ReportInvPayPage = () => {
       invoice_number_vendor: invoiceNumber,
       start_Invoice_Date: startInvoiceDate,
       end_Invoice_Date: endInvoiceDate,
+      purch_org: filterPurOrg, //valueNmbr, //parameter pembacaan u/ melakukan permintaan API
     };
     try {
       const response = await dispatch(fetchFile(params));
@@ -178,12 +183,16 @@ export const ReportInvPayPage = () => {
         const blob = new Blob([response.payload.data], {
           type: "application/xlsx",
         });
+        // Corrected the syntax here
         const link = document.createElement("a");
         link.href = window.URL.createObjectURL(blob);
         link.download = "Report_Invoice_vs_Payment.xlsx";
         link.click();
       } else {
-        showErrorDialog(response.payload.data.message);
+        // Corrected the syntax here
+        const action = await showErrorDialog(response.payload.data.message);
+        if (action.isConfirmed) await history.push("/logout");
+        valueNmbr = action.payload.value; // Corrected the syntax here
         console.log("else");
       }
     } catch (error) {
