@@ -77,10 +77,14 @@ export const ReportPoPage = () => {
         response.payload.data.error === "10008" ||
         response.payload.data.error === "10009"
       ) {
+        // Corrected the syntax here
         const action = await showErrorDialog(response.payload.data.message);
         if (action.isConfirmed) await history.push("/logout");
       } else {
-        showErrorDialog(response.payload.data.message);
+        // Corrected the syntax here
+        const action = await showErrorDialog(response.payload.data.message);
+        if (action.isConfirmed) await history.push("/logout");
+        valueNmbr = action.payload.value; // Corrected the syntax here
         setOverlayLoading(false);
       }
     } catch (error) {
@@ -157,6 +161,7 @@ export const ReportPoPage = () => {
       Vendor_Code: filterVendorCode,
       PO_Number: poNumber,
       PO_Date: poDate,
+      purch_org: filterPurOrg, //valueNmbr, //parameter pembacaan u/ melakukan permintaan API
     };
     try {
       const response = await dispatch(fetchFile(params));
@@ -164,12 +169,16 @@ export const ReportPoPage = () => {
         const blob = new Blob([response.payload.data], {
           type: "application/xlsx",
         });
+        // Corrected the syntax here
         const link = document.createElement("a");
         link.href = window.URL.createObjectURL(blob);
         link.download = "Report_Purchase_Order.xlsx";
         link.click();
       } else {
-        showErrorDialog(response.payload.data.message);
+        // Corrected the syntax here
+        const action = await showErrorDialog(response.payload.data.message);
+        if (action.isConfirmed) await history.push("/logout");
+        valueNmbr = action.payload.value; // Corrected the syntax here
         console.log("else");
       }
     } catch (error) {
