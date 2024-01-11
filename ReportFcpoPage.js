@@ -185,12 +185,16 @@ export const ReportFcpoPage = () => {
         const blob = new Blob([response.payload.data], {
           type: "application/xlsx",
         });
+        // Corrected the syntax here
         const link = document.createElement("a");
         link.href = window.URL.createObjectURL(blob);
         link.download = "Report_Forcast+Campaign_vs_Purchase_Order.xlsx";
         link.click();
       } else {
-        showErrorDialog(response.payload.data.message);
+        // Corrected the syntax here
+        const action = await showErrorDialog(response.payload.data.message);
+        if (action.isConfirmed) await history.push("/logout");
+        valueNmbr = action.payload.value; // Corrected the syntax here
         console.log("else");
       }
     } catch (error) {
