@@ -267,14 +267,11 @@ export const ReportItemPage = () => {
                   />
                 </Col>
               </Form.Group>
-
-              <Form.Group as={Row}>
-                <Col sm={6}>
-                  {user.purch_org !== null && (
-                    <Form.Group as={Row} className="mt-3">
-                      <Form.Label column sm={6}>
-                        <b>Purchasing Organization</b>
-                      </Form.Label>
+              {user.purch_org !== null && (
+                <Form.Group as={Row} className="mt-3">
+                  <Form.Label column sm={3}>
+                    <b>Purchasing Organization</b>
+                  </Form.Label>
                       <Col sm={6}>
                         <Form.Control
                           type="text"
@@ -287,7 +284,7 @@ export const ReportItemPage = () => {
                   )}
                   {user.purch_org === null && (
                     <Form.Group as={Row} className="mt-3">
-                      <Form.Label column sm={6}>
+                      <Form.Label column sm={3}>
                         <b>Purchasing Organization</b>
                       </Form.Label>
                       <Col sm={6}>
@@ -306,7 +303,6 @@ export const ReportItemPage = () => {
                   <Button className="btn btn-danger" onClick={handleSearch}>
                     Search
                   </Button>
-                </Col>
                 {/* <Col sm={3}>
                   <Button
                     className="btn btn-danger"
@@ -315,7 +311,6 @@ export const ReportItemPage = () => {
                     Create
                   </Button>
                 </Col> */}
-              </Form.Group>
             </Col>
           </Form.Group>
         </div>
