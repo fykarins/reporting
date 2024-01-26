@@ -267,7 +267,7 @@ export const ReportItemPage = () => {
                   />
                 </Col>
               </Form.Group>
-              {user.purch_org !== null && (
+              {/* {user.purch_org !== null && (
                 <Form.Group as={Row} className="mt-3">
                   <Form.Label column sm={3}>
                     <b>Purchasing Organization</b>
@@ -299,7 +299,7 @@ export const ReportItemPage = () => {
                         />
                       </Col>
                     </Form.Group>
-                 )}
+                 )} */}
                   <Button className="btn btn-danger" onClick={handleSearch}>
                     Search
                   </Button>
