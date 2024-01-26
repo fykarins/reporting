@@ -274,46 +274,42 @@ export const ReportStockDepoPage = () => {
                   />
                 </Col>
               </Form.Group>
-
-              <Form.Group as={Row}>
-                <Col sm={6}>
-                  {user.purch_org !== null && (
-                    <Form.Group as={Row} className="mt-3">
-                      <Form.Label column sm={6}>
-                        <b>Purchasing Organization</b>
-                      </Form.Label>
-                      <Col sm={6}>
-                        <Form.Control
-                          type="text"
-                          placeholder="Purchasing Organization"
-                          value={user.purch_org}
-                          disabled
-                        />
-                      </Col>
-                    </Form.Group>
-                  )}
-                  {user.purch_org === null && (
-                    <Form.Group as={Row} className="mt-3">
-                      <Form.Label column sm={6}>
-                        <b>Purchasing Organization</b>
-                      </Form.Label>
-                      <Col sm={6}>
-                        <Form.Control
-                          type="text"
-                          placeholder="Purchasing Organization"
-                          onChange={(e) => {
-                            setValueNmbr(e.target.value);
-                          }}
-                          value={valueNmbr} 
-                          onKeyPress={handleKeyPress}
-                        />
-                      </Col>
-                    </Form.Group>
-                 )}
-                  <Button className="btn btn-danger" onClick={handleSearch}>
-                    Search
-                  </Button>
-                </Col>
+              {user.purch_org !== null && (
+                <Form.Group as={Row} className="mt-3">
+                  <Form.Label column sm={3}>
+                    <b>Purchasing Organization</b>
+                  </Form.Label>
+                    <Col sm={6}>
+                      <Form.Control
+                        type="text"
+                        placeholder="Purchasing Organization"
+                        value={user.purch_org}
+                        disabled
+                      />
+                    </Col>
+                  </Form.Group>
+              )}
+              {user.purch_org === null && (
+                <Form.Group as={Row} className="mt-3">
+                  <Form.Label column sm={3}>
+                    <b>Purchasing Organization</b>
+                  </Form.Label>
+                    <Col sm={6}>
+                      <Form.Control
+                        type="text"
+                        placeholder="Purchasing Organization"
+                        onChange={(e) => {
+                          setValueNmbr(e.target.value);
+                        }}
+                        value={valueNmbr} 
+                        onKeyPress={handleKeyPress}
+                      />
+                    </Col>
+                </Form.Group>
+             )}
+              <Button className="btn btn-danger" onClick={handleSearch}>
+                Search
+              </Button>
                 {/* <Col sm={3}>
                   <Button
                     className="btn btn-danger"
@@ -322,7 +318,6 @@ export const ReportStockDepoPage = () => {
                     Create
                   </Button>
                 </Col> */}
-              </Form.Group>
             </Col>
           </Form.Group>
         </div>
