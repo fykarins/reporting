@@ -45,8 +45,6 @@ export const ReportPoPage = () => {
     user.vendor_code === null
       ? vendorCode
       : user.vendor_code.replace("0000", "");
-  const filterPurOrg =
-    user.purch_org === null ? valueNmbr : user.purch_org;
 
   useEffect(() => {
     // Reset on first load
@@ -65,7 +63,6 @@ export const ReportPoPage = () => {
       Vendor_Code: filterVendorCode,
       PO_Number: poNumber,
       PO_Date: poDate,
-      purch_org: filterPurOrg, //valueNmbr, //parameter pembacaan u/ melakukan permintaan API
       pageNo: 1,
       pageSize: 10,
     };
@@ -77,14 +74,10 @@ export const ReportPoPage = () => {
         response.payload.data.error === "10008" ||
         response.payload.data.error === "10009"
       ) {
-        // Corrected the syntax here
         const action = await showErrorDialog(response.payload.data.message);
         if (action.isConfirmed) await history.push("/logout");
       } else {
-        // Corrected the syntax here
-        const action = await showErrorDialog(response.payload.data.message);
-        if (action.isConfirmed) await history.push("/logout");
-        valueNmbr = action.payload.value; // Corrected the syntax here
+        showErrorDialog(response.payload.data.message);
         setOverlayLoading(false);
       }
     } catch (error) {
@@ -103,7 +96,6 @@ export const ReportPoPage = () => {
         Vendor_Code: filterVendorCode,
         PO_Number: poNumber,
         PO_Date: poDate,
-        purch_org: filterPurOrg, //valueNmbr, //parameter pembacaan u/ melakukan permintaan API
         pageNo: page,
         pageSize: sizePerPage,
       };
@@ -115,14 +107,10 @@ export const ReportPoPage = () => {
           response.payload.data.error === "10008" ||
           response.payload.data.error === "10009"
         ) {
-          // Corrected the syntax here
           const action = await showErrorDialog(response.payload.data.message);
           if (action.isConfirmed) await history.push("/logout");
         } else {
-          // Corrected the syntax here
-          const action = await showErrorDialog(response.payload.data.message);
-          if (action.isConfirmed) await history.push("/logout");
-          valueNmbr = action.payload.value; // Corrected the syntax here
+          showErrorDialog(response.payload.data.message);
           setOverlayLoading(false);
         }
       } catch (error) {
@@ -161,7 +149,6 @@ export const ReportPoPage = () => {
       Vendor_Code: filterVendorCode,
       PO_Number: poNumber,
       PO_Date: poDate,
-      purch_org: filterPurOrg, //valueNmbr, //parameter pembacaan u/ melakukan permintaan API
     };
     try {
       const response = await dispatch(fetchFile(params));
@@ -169,16 +156,12 @@ export const ReportPoPage = () => {
         const blob = new Blob([response.payload.data], {
           type: "application/xlsx",
         });
-        // Corrected the syntax here
         const link = document.createElement("a");
         link.href = window.URL.createObjectURL(blob);
         link.download = "Report_Purchase_Order.xlsx";
         link.click();
       } else {
-        // Corrected the syntax here
-        const action = await showErrorDialog(response.payload.data.message);
-        if (action.isConfirmed) await history.push("/logout");
-        valueNmbr = action.payload.value; // Corrected the syntax here
+        showErrorDialog(response.payload.data.message);
         console.log("else");
       }
     } catch (error) {
@@ -274,42 +257,41 @@ export const ReportPoPage = () => {
                   />
                 </Col>
               </Form.Group>
-
+              {user.purch_org !== null && (
+                <Form.Group as={Row} className="mt-3">
+                  <Form.Label column sm={3}>
+                    <b>Purchasing Organization</b>
+                  </Form.Label>
+                    <Col sm={6}>
+                      <Form.Control
+                        type="text"
+                        placeholder="Purchasing Organization"
+                        value={user.purch_org}
+                        disabled
+                      />
+                    </Col>
+                </Form.Group>
+              )}
+              {user.purch_org === null && (
+                <Form.Group as={Row} className="mt-3">
+                  <Form.Label column sm={3}>
+                    <b>Purchasing Organization</b>
+                  </Form.Label>
+                    <Col sm={6}>
+                      <Form.Control
+                        type="text"
+                        placeholder="Purchasing Organization"
+                        onChange={(e) => {
+                          setValueNmbr(e.target.value); 
+                        }}
+                        value={valueNmbr}
+                        onKeyPress={handleKeyPress}
+                      />
+                    </Col>
+                </Form.Group>
+              )}
               <Form.Group as={Row}>
-                <Col sm={6}>
-                  {user.purch_org !== null && (
-                    <Form.Group as={Row} className="mt-3">
-                      <Form.Label column sm={6}>
-                        <b>Purchasing Organization</b>
-                      </Form.Label>
-                      <Col sm={6}>
-                        <Form.Control
-                          type="text"
-                          placeholder="Purchasing Organization"
-                          value={user.purch_org}
-                          disabled
-                        />
-                      </Col>
-                    </Form.Group>
-                  )}
-                  {user.purch_org === null && (
-                    <Form.Group as={Row} className="mt-3">
-                      <Form.Label column sm={6}>
-                        <b>Purchasing Organization</b>
-                      </Form.Label>
-                      <Col sm={6}>
-                        <Form.Control
-                          type="text"
-                          placeholder="Purchasing Organization"
-                          onChange={(e) => {
-                            setValueNmbr(e.target.value);  
-                          }}
-                          value={valueNmbr}  
-                          onKeyPress={handleKeyPress}
-                        />
-                      </Col>
-                    </Form.Group>
-                 )}
+                <Col sm={3}>
                   <Button className="btn btn-danger" onClick={handleSearch}>
                     Search
                   </Button>
